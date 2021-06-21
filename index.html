@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Configuração Leitores Correios</title>
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        
+        <style>
+
+            .fluxoOk {
+                background: black;
+            }
+
+            .erroGeral {
+                background: red;
+            }
+
+            .cabecalho {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0rem 0rem;
+                margin-bottom: 0rem;
+                height: 50px;
+            }
+
+            .sucesso {
+                background-color: #80ffd4;
+            }
+
+            .erro {
+                background-color: #ff3333;
+            }
+
+            #one {
+                background: white;
+                width: 95%;
+                margin-top: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .labelForBarcode {
+                display: block;
+            }
+
+            #two{
+                background: white;                
+                width: 95%;
+                margin-top: 150px;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            #two_half{
+                background: white;                
+                width: 95%;
+                margin-top: 150px;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            #three {
+                background: white;                
+                width: 95%;
+                margin-top: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            #three_half {
+                background: white;                
+                width: 95%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            #four {
+                background: white;                
+                width: 95%;
+                margin-top: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            #four_half {
+                background: white;                
+                width: 95%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .testes {
+                background: white;                
+                width: 45%;
+                padding: 20px;
+                margin-top: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .final {
+                background: white;                
+                width: 90%;
+                height: 50%¨;
+                padding: 20px; 
+                margin-top: 1%;
+                margin-left: auto;
+                margin-right: auto;
+                align-items: center;
+                text-align: center;
+            }
+
+            textarea {
+                height: 175px;
+                width: 70%;
+            }
+
+            .formataErro {
+                background: white;                
+                width: 54%;
+                padding: 20px;
+                margin-top: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                text-align: center;
+
+            }
+
+            .spaceFlexAround {
+                width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .esconder {
+                display: none !important;
+            }
+            
+            .borderWhite {
+                padding: auto;
+            }
+
+            .textoAlerta {
+                color:red !important;
+                font-weight: bold;
+                font-size: 40px;
+            }
+
+        </style>
+
+    </head>
+  
+    <body id="status">
+
+        <div class="jumbotron cabecalho">
+            <h1 class="display-7">CONFIG CORREIOS</h1>
+        </div>
+
+        <!-- COMMAND / BARCODE -->
+        <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="headmessage">Comand/Barcode</span>
+            </div>
+            <input type="text" id="inputCmd" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+        </div>
+
+        <!-- PROGRESS BAR -->    
+        <div class="progress">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+        </div>
+
+        <div id="inicioTest" class="final">
+            <span class="textoAlerta">VERIFIQUE O LED E ETIQUETA</span>
+            <br>
+            <img src="barcodes/led_etiqueta.jpeg">
+            <br>
+            <br>
+            <br>
+            <canvas 
+                id="iniciaTeste" 
+                width=1 height=1 style="border:1px solid #fff;">
+            </canvas>
+            <br>
+            <h2>INICIA TESTE</h2> Versão 8 (10/03/2021)
+        </div>
+
+       <div id="one">
+            <div class='borderWhite'>
+                <strong>
+                1)INICIO CONFIG
+                </strong><br>
+                <canvas 
+                    id="inicio" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <div class='borderWhite'>
+                    <strong>
+                    2)PADRÃO DE FÁBRICA</strong><br>
+                    <canvas 
+                        id="padraoFabrica" 
+                        width=1 height=1 style="border:1px solid #fff;">
+                    </canvas>
+                </div>    
+            </div>
+
+            <div>
+                <strong>
+                3)TECLADO BRASIL ABNT2<br>
+                </strong>
+                <canvas 
+                    id="abnt2" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+        </div>                
+
+        <div id="two">
+            <div>
+                <strong>
+                6)UPC-A C/ SUPL. 2 DE 5<br>
+                </strong>
+                <canvas 
+                    id="upca" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <strong>
+                5)EAN-8 C/ SUPL. 2 DE 5<br>
+                </strong>
+                <canvas 
+                    id="ean8" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <strong>
+                4)EAN-13 C/ SUPL. 2 DE 5<br>
+                </strong>
+                <canvas 
+                    id="ean13" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+        </div>                
+
+        <div id="two_half">
+            <div>
+                <strong>
+                7)UPC-E C/ SUPL. 2 DE 5<br>
+                </strong>
+                <canvas 
+                    id="twoOfFive"
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <strong>
+                8)LED SEMPRE LIGADO<br>
+                </strong>
+                <canvas 
+                    id="alwaysOn" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <strong>
+                9)FIM<br>
+                </strong>
+                <canvas 
+                    id="fim" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+
+            <div>
+                <strong>
+                    PRÓXIMO<br>
+                </strong>
+                <canvas 
+                    id="next" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+        </div>                
+
+
+        <div id="three">
+            <div>
+                <strong>
+                1)INICIO CONFIG</strong><br>
+                <canvas 
+                    id="inicio2" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+            <div>
+                <strong>
+                2)SALVA CONFIG<br>
+                </strong>
+                <canvas 
+                    id="salva" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+            <div>
+                <strong>
+                3)FIM CONFIG<br>
+                </strong>
+
+                <canvas 
+                    id="fim2" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+
+            </div>
+        </div>                
+
+        <div id="three_half">
+            <div>
+                <strong>
+                    PRÓXIMO<br>
+                </strong>
+
+                <div>
+                    <img src="barcodes/2de5.bmp">
+                </div>
+
+                <!--
+                <canvas 
+                    id="next2" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+                -->
+
+            </div>
+        </div>                
+
+        <div id="four">
+            <div>
+                <strong>
+                1)INICIO CONFIG</strong><br>
+                <canvas 
+                    id="inicio3" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+            <div>
+                <strong>
+                2)PADRÃO FABRICA<br>
+                </strong>
+                <canvas 
+                    id="fabrica" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+            <div>
+                <strong>
+                3)FIM CONFIG<br>
+                </strong>
+                <canvas 
+                    id="fim3" 
+                    width=1 height=1 style="border:1px solid #fff;">
+                </canvas>
+            </div>
+        </div>      
+
+        <div id="four_half">
+
+            <div id="test1" class="testes">
+                <div>
+                    <img src="barcodes/39.gif">
+                </div>
+            </div>      
+        </div>      
+
+
+        <!-- PAGINA 5 -->    
+        <div id="test2" class="testes">
+            <div>
+                <img src="barcodes/EAN-13CSUPLEMENTOS.png">
+            </div>
+        </div>      
+
+        <div id="test3" class="testes">
+            <div>
+                <img src="barcodes/EAN-8CSUPLEMENTOS.png">
+            </div>
+        </div>      
+
+        <div id="test4" class="testes">
+            <div>
+                <img src="barcodes/UPC-ACSUPLEMENTOS.jpg">
+            </div>
+        </div>      
+
+        <div id="test5" class="testes">
+            <div>
+                <img src="barcodes/UPC-ECSUPLEMENTOS.png">
+            </div>
+        </div>      
+
+        <div id="test6" class="testes">
+            <div>
+                <svg id="test6_barcode" class="barcode"
+                    jsbarcode-format="CODE128"
+                    jsbarcode-value=""
+                    jsbarcode-textmargin="0"
+                    jsbarcode-fontoptions="bold">
+                </svg>
+            </div>
+        </div>      
+
+        <div id="test7" class="testes">
+            <div>
+                <svg id="test7_barcode" class="barcode"
+                    jsbarcode-format="CODE128"
+                    jsbarcode-value=""
+                    jsbarcode-textmargin="0"
+                    jsbarcode-fontoptions="bold">
+                </svg>
+            </div>
+        </div>      
+
+        <div id="finalTest" class="final">
+            <textarea id="areaLivre"></textarea>
+            <br><br>
+            <h1>FINALIZAR TESTE</h1>
+            <!--
+            <img src="barcodes/reset.gif">
+            -->
+            <br>
+            <img src="barcodes/pdf417.jpeg">
+            <br>
+            <br>
+            <h2>RESET/PROXIMO</h2>
+            <br>
+            
+        </div>
+
+        <div id="mensagemErro" class='formataErro'>
+            <div>
+                <h3>ERRO DE LEITURA</h3>
+                <h3>POSSÍVEL ERRO DE CONFIGURAÇÃO/EQUIPAMENTO</h3>
+                <h3>LEIA O CÓDIGO ABAIXO OU DIGITE 'reset' + ENTER<br> NA CAIXA DE COMANDO</h2>
+                    <br>
+                <img src="barcodes/reset.gif">
+            </div>
+        </div>      
+
+    </body>
+
+    <script src="JsBarcode.all.min.js"></script>
+    <script src="dist/bwip-js.js"></script>
+
+    <script>
+
+        let minhaEscala = 2;
+        let escalaNext = 2
+        let timeout = 0;
+        let page = 0;
+        let allText = '';
+
+        let status = document.getElementById('status');
+        status.classList.add('fluxoOk');
+
+        let pgBar = document.getElementById('progressBar');
+        pgBar.setAttribute("style", "width: 0%");                        
+
+        let page0 = document.getElementById('inicioTest');
+        let page1Tab1 = document.getElementById('one');
+        let page1Tab2 = document.getElementById('two');
+        let page1Tab3 = document.getElementById('two_half');
+        let page2Tab1 = document.getElementById('three');
+        let page2Tab2 = document.getElementById('three_half');
+        let page3Tab1 = document.getElementById('four');
+        let page3Tab2 = document.getElementById('four_half');
+        let page5 = document.getElementById('test2');
+        let page6 = document.getElementById('test3');
+        let page7 = document.getElementById('test4');
+        let page8 = document.getElementById('test5');
+        let page9 = document.getElementById('test6');
+        let page10 = document.getElementById('test7');
+        let page20 = document.getElementById('finalTest');
+        let page50 = document.getElementById('mensagemErro');
+
+        let areaLivre = document.getElementById('areaLivre');
+        areaLivre.value = '';
+
+        let input = document.getElementById("inputCmd");
+
+        hideAll();
+        enablePage();
+        input.focus();
+
+        function reset() {
+            page = 0;
+            status.classList.remove('erroGeral');
+            status.classList.add('fluxoOk');
+            hideAll();
+            enablePage();
+            pgBar.setAttribute("style", "width: 0%");                        
+            input.value = '';
+            allText = '';
+            areaLivre.value = '';
+            input.focus();
+        }
+
+        function erroGeral() {
+            status.classList.remove('fluxoOk');
+            status.classList.add('erroGeral');
+            page = 50;
+            hideAll();
+            enablePage();
+            input.value = '';
+            input.focus();
+        }
+
+        function hideAll() {
+            page0.classList.add('esconder');    
+            page1Tab1.classList.add('esconder');
+            page1Tab2.classList.add('esconder');
+            page1Tab3.classList.add('esconder');
+            page2Tab1.classList.add('esconder');
+            page2Tab2.classList.add('esconder');
+            page3Tab1.classList.add('esconder');
+            page3Tab2.classList.add('esconder');
+            page5.classList.add('esconder');
+            page6.classList.add('esconder');
+            page7.classList.add('esconder');
+            page8.classList.add('esconder');
+            page9.classList.add('esconder');
+            page10.classList.add('esconder');
+            page20.classList.add('esconder');
+            page50.classList.add('esconder');
+        }
+
+        function enablePage() {
+            if(page == 0) {
+                page0.classList.remove('esconder');
+            }
+            else if(page == 1) {
+                page1Tab1.classList.remove('esconder');
+                page1Tab2.classList.remove('esconder');
+                page1Tab3.classList.remove('esconder');
+            } 
+            else if (page == 2) {
+                page2Tab1.classList.remove('esconder');
+                page2Tab2.classList.remove('esconder');
+            } 
+            else if (page == 3) {
+                page3Tab1.classList.remove('esconder');
+                page3Tab2.classList.remove('esconder');
+            }
+            else if (page == 5) { page5.classList.remove('esconder'); }
+            else if (page == 6) { page6.classList.remove('esconder'); }
+            else if (page == 7) { page7.classList.remove('esconder'); }
+            else if (page == 8) { page8.classList.remove('esconder'); }
+            else if (page == 9) { page9.classList.remove('esconder'); }
+            else if (page == 10) { page10.classList.remove('esconder'); }
+            else if (page == 20) { page20.classList.remove('esconder'); }
+            else if (page == 50) { page50.classList.remove('esconder'); }
+        }
+
+        function processTest() {
+            hideAll();
+            enablePage();
+            input.focus();
+        }
+
+        function processTest2() {
+            hideAll();
+        }
+
+        input.addEventListener("keyup", function(event) {
+            if (event.keyCode == 13) {
+
+                let leitura = input.value;
+
+                if ((leitura == 'reset')||(leitura == 'RESET')||(leitura=='proximo'))  {
+                    reset();
+                    return;
+                }
+  
+                if(page == 0) {
+                    if(leitura == 'www.nonus.com.br') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        processTest();
+                    }
+                    else {
+                        input.value = '';
+                        input.focus();
+                        page = 0;
+                    }   
+                }
+                else if(page == 1) {
+                    if(leitura == '1010') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 10%");
+                        processTest();
+                    }   
+                }
+                else if(page == 2) {
+                    if((leitura == '34196846500000621271090104717000622060275000')||(leitura == '1010')) {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 20%");
+                        processTest();
+                    }   
+                    else if(leitura == '3419684650000062') {
+                        input.value = '';
+                        input.focus();
+                        page = 2;
+                        processTest();
+                    }
+                    else erroGeral();
+                }
+                else if(page == 3) {
+                    if(leitura == 'STX$+/-.') {
+                        input.value = '';
+                        input.focus();
+                        page+=2;
+                        pgBar.setAttribute("style", "width: 35%");
+                        processTest();
+                    } 
+                    else erroGeral();
+                }
+                else if((page == 5)||(page==4)) {
+                    if(leitura == '501234567890050029') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 50%");
+                        processTest();
+                    }
+                    else if(leitura == '5012345678900') {  
+                        input.value = '';
+                        input.focus();
+                        page = 5;
+                        processTest();
+                    }
+                    else erroGeral();
+                }
+                else if(page == 6) {
+                    if(leitura == '1234567036581') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 60%");
+                        processTest();
+                    }   
+                    else if(leitura == '12345670') {
+                        input.value = '';
+                        input.focus();
+                        page = 6;
+                        processTest();
+                    }
+                    else erroGeral();
+                }
+                else if(page == 7) {
+                    if(leitura == '12345678901290000') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 70%");                        
+                        processTest();
+                    }   
+                    else if(leitura == '123456789012') {
+                        input.value = '';
+                        input.focus();
+                        page = 7;
+                        pgBar.setAttribute("style", "width: 78%");                        
+                        processTest();
+                    }
+                    else erroGeral();
+                }
+                else if(page == 8) {
+                    if(leitura == '0123450503') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 86%");                        
+                        processTest();
+                    }   
+                    else if(leitura == '01234505') {
+                        input.value = '';
+                        input.focus();
+                        page = 8;
+                        processTest();
+                    }
+                    else erroGeral();
+                } else if(page == 9) {
+                    if(leitura == '35190702314269000178550000001037041036717275') {
+                        input.value = '';
+                        input.focus();
+                        page++;
+                        pgBar.setAttribute("style", "width: 92%");                        
+                        processTest();
+                    }
+                    else erroGeral();    
+                } else if(page == 10) {
+                    if(leitura == 'LB114035095SG') {
+                        input.value = '';
+                        input.focus();
+                        page = 20;
+                        pgBar.setAttribute("style", "width: 100%");                        
+                        processTest();
+                    }
+                    else erroGeral();
+                } else if(page == 20) {
+                    allText = allText + leitura + '\r\n';
+                    areaLivre.value = allText;
+                    input.value = '';
+                }
+
+            } // keyCode == 13
+        }); // keyup
+
+        // COMPONENTE BARCODE/CANVAS
+        let iniciaTeste = bwipjs.toCanvas('iniciaTeste', {
+            bcid:        'qrcode',      // Barcode type
+            text:        'www.nonus.com.br',         // Text to encode
+            scale:       3,                // 3x scaling factor
+            height:      20,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let canvas = bwipjs.toCanvas('inicio', {
+            bcid:        'datamatrix',  // Barcode type
+            text:        '%+$.$',       // Text to encode
+            scale:       minhaEscala,   // 3x scaling factor
+            height:      10,            // Bar height, in millimeters
+            includetext: true,          // Show human-readable text
+            textxalign:  'center',      // Always good to set this
+            backgroundcolor: '00000000',
+        });
+
+        let padraoFabrica = bwipjs.toCanvas('padraoFabrica', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%++%',           // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let abnt2 = bwipjs.toCanvas('abnt2', {
+            bcid:        'datamatrix',    // Barcode type
+            text:        'KM20',          // Text to encode
+            scale:       minhaEscala,     // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let upca = bwipjs.toCanvas('upca', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        'UA07',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let ean8 = bwipjs.toCanvas('ean8', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        'E805',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let ean13 = bwipjs.toCanvas('ean13', {
+            bcid:        'datamatrix',    // Barcode type
+            text:        'ED07',          // Text to encode
+            scale:       minhaEscala,     // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        // TERCEIRA LINHA - PAGINA CONFIG
+
+        let twoOfFive = bwipjs.toCanvas('twoOfFive', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        'UE07',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let alwaysOn = bwipjs.toCanvas('alwaysOn', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        'AIM02',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let fim = bwipjs.toCanvas('fim', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%$$%',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let next = bwipjs.toCanvas('next', {
+            bcid:        'code39',      // Barcode type
+            text:        '1010',         // Text to encode
+            scale:       escalaNext,                // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+       // 2 TELA     
+       let inicio2 = bwipjs.toCanvas('inicio2', {
+            bcid:        'datamatrix',  // Barcode type
+            text:        '%+$.$',       // Text to encode
+            scale:       minhaEscala,   // 3x scaling factor
+            height:      10,            // Bar height, in millimeters
+            includetext: true,          // Show human-readable text
+            textxalign:  'center',      // Always good to set this
+        });
+
+        let salva = bwipjs.toCanvas('salva', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%scf%',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let fim2 = bwipjs.toCanvas('fim2', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%$$%',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,                // Bar height, in millimeters
+            includetext: true,              // Show human-readable text
+            textxalign:  'center',          // Always good to set this
+        });
+
+        /*
+        let next2 = bwipjs.toCanvas('next2', {
+            bcid:        'code39',      // Barcode type
+            text:        '1010',         // Text to encode
+            scale:       escalaNext,                // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+        */
+
+       // 3 TELA     
+       let inicio3 = bwipjs.toCanvas('inicio3', {
+            bcid:        'datamatrix',  // Barcode type
+            text:        '%+$.$',       // Text to encode
+            scale:       minhaEscala,   // 3x scaling factor
+            height:      10,            // Bar height, in millimeters
+            includetext: true,          // Show human-readable text
+            textxalign:  'center',      // Always good to set this
+        });
+
+        let fabrica = bwipjs.toCanvas('fabrica', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%rcf%',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        let fim3 = bwipjs.toCanvas('fim3', {
+            bcid:        'datamatrix',      // Barcode type
+            text:        '%$$%',            // Text to encode
+            scale:       minhaEscala,       // 3x scaling factor
+            height:      10,              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        });
+
+        // TEST1
+        JsBarcode("#test6_barcode", "35190702314269000178550000001037041036717275", {
+            format: "CODE128",
+            text: "35190702314269000178550000001037041036717275"
+        });    
+        
+        JsBarcode("#test7_barcode", "LB114035095SG", {
+            format: "CODE128",
+            text: "LB114035095SG"
+        });    
+
+        input.focus();
+
+    </script>
+
+</html>
